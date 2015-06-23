@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Date: 10/15/13
  * Time: 7:47 PM
  *
- * copied form fast-cast
+ * copied from kontraktor
  */
 public class RateMeasure {
 
