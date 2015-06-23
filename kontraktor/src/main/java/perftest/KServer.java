@@ -23,10 +23,16 @@ public class KServer extends Actor<KServer> {
         int result = sum.getFirst() + sum.getSecond();
     }
 
-    // that's how the method should actually look, but no ask support in akka ..
+    // that's how the method look as idiomatic kontraktor method (params instead message class)
     public IPromise<Integer> askSum( int x, int y ) {
         measure.count();
         return new Promise<>(x + y);
+    }
+
+    // unnecessary message object, but obviate accusation of testing unfair ..
+    public IPromise<Integer> askSumMsg( Sum sum ) {
+        measure.count();
+        return new Promise<>(sum.getFirst()+sum.getSecond());
     }
 
     public static void main(String[] args) {
