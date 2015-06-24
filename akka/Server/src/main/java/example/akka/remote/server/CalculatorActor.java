@@ -17,7 +17,7 @@ public class CalculatorActor extends UntypedActor {
             SumAsk sum = (SumAsk) message;
 
             int result = sum.getFirst() + sum.getSecond();
-            getSender().tell(new Result(result), getSelf());
+            getSender().tell(result, getSelf());
         } else if (message instanceof Sum) {
             measure.count();
             Sum sum = (Sum) message;

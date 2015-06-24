@@ -27,15 +27,4 @@ public class Messages {
         }
     }
 
-    public static class Result implements Serializable {
-        private int result;
-
-        public Result(int result) {
-            this.result = result;
-        }
-
-        public int getResult() {
-            return result;
-        }
-    }
 }

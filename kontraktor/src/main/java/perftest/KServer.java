@@ -11,19 +11,19 @@ public class KServer extends Actor<KServer> {
 
     RateMeasure measure = new RateMeasure("msg/sec");
 
-    // that's how a no-return sum method would look like with Kontraktor
+    // that's how a no-return sum method would look like with Kontraktor 2 million/sec
     public void sum( int x, int y ) {
         measure.count();
         int result = x + y;
     }
 
-    // unnecessary message object, but obviate accusation of testing unfair ..
+    // unnecessary message object, but obviate accusation of testing unfair .. 1.5 million/sec
     public void sumMsg( Sum sum ) {
         measure.count();
         int result = sum.getFirst() + sum.getSecond();
     }
 
-    // that's how the method look as idiomatic kontraktor method (params instead message class)
+    // that's how the method look as idiomatic kontraktor method (params instead message class) 1.05 million/sec
     public IPromise<Integer> askSum( int x, int y ) {
         measure.count();
         return new Promise<>(x + y);

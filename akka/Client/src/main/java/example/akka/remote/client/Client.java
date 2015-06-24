@@ -15,10 +15,10 @@ public class Client {
         client.tell(system, ActorRef.noSender());
 
         // start benchmark
-        client.tell("tell", ActorRef.noSender());
+//        client.tell("tell", ActorRef.noSender());
 
         // start benchmark
-//        client.tell("ask", ActorRef.noSender());
+        client.tell("ask", ActorRef.noSender());
 
         while (true) {
             Thread.sleep(1000);

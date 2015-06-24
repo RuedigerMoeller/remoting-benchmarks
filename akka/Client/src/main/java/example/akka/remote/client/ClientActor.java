@@ -32,7 +32,7 @@ public class ClientActor extends UntypedActor {
             for (int i = 0; i < NUM_MSG; i++) {
                 Future<Object> ask = Patterns.ask(server, new Messages.SumAsk(i, i + 1), 10000);
                 openFutures.incrementAndGet();
-                while( openFutures.get() > 200_000 ) {
+                while( openFutures.get() > 400_000 ) {
                     // don't know how to handle this idiomaticly, but this
                     // definitely speeds things up. Else queues get huge and
                     // everything starves

@@ -11,27 +11,25 @@ import org.nustaq.kontraktor.util.Log;
  */
 public class KClient {
 
-    static int NUM_MSG = 10_000_000;
+    static int NUM_MSG = 20_000_000;
 
     public static class ClientActor extends Actor<ClientActor> {
 
         KServer server;
 
         public IPromise benchTellIdiomatic() {
-            init();
-            server.print("benchTellSumObject START");
+            server.print("benchTellIdiomatic START");
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
                     yield(); // pseudo wait. else actor thread gets stuck
                 server.sum(i, i + 1);
             }
-            server.print("benchTellSumObject DONE");
+            server.print("benchTellIdiomatic DONE");
             Log.Info(this,"Done");
             return resolve();
         }
 
         public IPromise benchTellSumObject() {
-            init();
             server.print("benchTellSumObject START");
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
@@ -44,33 +42,56 @@ public class KClient {
         }
 
         public IPromise benchAskSum() {
-            init();
             server.print("benchAskSum START");
+            int resCount[] = {0}; // valid callback in same thread
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
-                server.askSum(i, i + 1);
+                server.askSum(i, i + 1).then(res -> resCount[0]++);
+            }
+            while( resCount[0] < NUM_MSG ) {
+                yield(1000);
+                System.out.println("waiting "+resCount[0]);
             }
             server.print("benchAskSum DONE");
             Log.Info(this,"Done");
             return resolve();
         }
 
-        // not async because not public. helper
-        private void init() {
+        public IPromise benchAskSumMsg() {
+            server.print("benchAskSumMsg START");
+            int resCount[] = {0}; // valid callback in same thread
+            for ( int i = 0; i < NUM_MSG; i++ ) {
+                while ( server.isMailboxPressured() )
+                    yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
+                server.askSumMsg(new Sum(i,i+1)).then( res -> resCount[0]++ );
+            }
+            while( resCount[0] < NUM_MSG ) {
+                yield(1000);
+                System.out.println("waiting "+resCount[0]);
+            }
+            server.print("benchAskSumMsg DONE");
+            Log.Info(this,"Done");
+            return resolve();
+        }
+
+        public IPromise init() {
             server = (KServer) new TCPConnectable(KServer.class,"localhost",7001).connect( (res,err) -> {
                 Log.Info(this,"disconnected, exiting");
                 System.exit(0);
-            }).await(); // pseudo block
+            }).await(); // pseudo block as inside actor
+            return resolve();
         }
 
     }
 
     public static void main(String[] args) {
         ClientActor client = Actors.AsActor(ClientActor.class,256000);
+        client.init().await(); // we are outside actors => blocking is ok here
         client.benchTellIdiomatic()
             .thenAnd( () -> client.benchTellSumObject())
-            .then(    () -> client.benchAskSum() );
+            .thenAnd(() -> client.benchAskSum())
+            .then(() -> client.benchAskSumMsg() );
     }
 
 }
