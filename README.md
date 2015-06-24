@@ -32,7 +32,7 @@ a) 1.900.000
 
 b) 1.050.000
 
-**AKKA**
+**AKKA** (with Kryo serialization enabled)
 
 a) 76.000	
 
