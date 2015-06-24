@@ -26,9 +26,30 @@ server.askSum( a, b ).then( result -> ... )
 
 Numbers on Haswell XEON 2.5 ghz Centos 7:
 
-Kontraktor:	a) 1.900.000	b) 1.050.000
-AKKA	a) 76.000	b) 65000
-RestExpress	a) 15.000	 b) 15.000  Note: http 1.1 does not allow for fire and forget
-Rest 100 connections:	48.000	48.000  Note: client uses 100 (!) connections to fire requests concurrently. 
+**Kontraktor:**
+
+a) 1.900.000	b) 1.050.000
+
+**AKKA**
+
+a) 76.000	
+
+b) 65000
+
+**RestExpress**	
+
+a) 15.000	 
+
+b) 15.000  
+
+Note: http 1.1 does not allow for fire and forget
+
+**Rest with 100 connections**	
+
+a) 48.000	
+
+b) 48.000  
+
+Note: client uses 100 (!) connections to fire requests concurrently. 
 This is cheating as message order is messed up this way. Was just curious.
 
