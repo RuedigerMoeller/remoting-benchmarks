@@ -21,6 +21,12 @@ public class Messages {
         }
     }
 
+    public static class SumAsk extends Sum {
+        public SumAsk(int first, int second) {
+            super(first, second);
+        }
+    }
+
     public static class Result implements Serializable {
         private int result;
 

@@ -8,20 +8,23 @@ import static example.akka.remote.shared.Messages.*;
 
 public class CalculatorActor extends UntypedActor {
 
-    private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
-
     RateMeasure measure = new RateMeasure("received tell");
     @Override
     public void onReceive(Object message) throws Exception {
 
-        if (message instanceof Sum) {
+        if (message instanceof SumAsk) {
+            measure.count();
+            SumAsk sum = (SumAsk) message;
+
+            int result = sum.getFirst() + sum.getSecond();
+            getSender().tell(new Result(result), getSelf());
+        } else if (message instanceof Sum) {
             measure.count();
             Sum sum = (Sum) message;
 
             int result = sum.getFirst() + sum.getSecond();
+            // no reply for simple one way message
 //            getSender().tell(new Result(result), getSelf());
-
-//            loggingActor.tell(sum.getFirst() + " + " + sum.getSecond() + " = " + result, getSelf());
         } else {
             unhandled(message);
         }

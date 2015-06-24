@@ -6,15 +6,23 @@ import akka.actor.Props;
 import com.typesafe.config.ConfigFactory;
 
 public class Client {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // Creating environment
         ActorSystem system = ActorSystem.create("AkkaRemoteClient", ConfigFactory.load());
 
         // Client actor
         ActorRef client = system.actorOf(Props.create(ClientActor.class));
+        client.tell(system, ActorRef.noSender());
 
-        // Send a Calc job
-        for ( int i = 0; i < 1000000; i++)
-            client.tell("DoCalcs", ActorRef.noSender());
+        // start benchmark
+        client.tell("tell", ActorRef.noSender());
+
+        // start benchmark
+//        client.tell("ask", ActorRef.noSender());
+
+        while (true) {
+            Thread.sleep(1000);
+            client.tell("printFutures", ActorRef.noSender());
+        }
     }
 }

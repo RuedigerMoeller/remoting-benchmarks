@@ -55,7 +55,7 @@ public class CharSequenceSender {
 					final IoFuture<Channel> future = conn.openChannel("test", OptionMap.EMPTY);
 					channel = future.get();
 					stream = channel.writeMessage();
-					stream.wr
+//					stream.wr
 					stream.write(new String(line.getBytes(), "UTF-8").getBytes());
 				} catch (Exception e) {
 					throw new RuntimeException("send char sequence error", e);

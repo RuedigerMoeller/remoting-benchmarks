@@ -17,7 +17,7 @@ public class KServer extends Actor<KServer> {
         int result = x + y;
     }
 
-    // that's a graceful slower impl to match Akka sample 1:1
+    // unnecessary message object, but obviate accusation of testing unfair ..
     public void sumMsg( Sum sum ) {
         measure.count();
         int result = sum.getFirst() + sum.getSecond();
@@ -33,6 +33,11 @@ public class KServer extends Actor<KServer> {
     public IPromise<Integer> askSumMsg( Sum sum ) {
         measure.count();
         return new Promise<>(sum.getFirst()+sum.getSecond());
+    }
+
+    // just enable client to put separating text
+    public void print( String s ) {
+        System.out.println("Client:"+s);
     }
 
     public static void main(String[] args) {
