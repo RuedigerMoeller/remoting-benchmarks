@@ -28,7 +28,9 @@ Numbers on Haswell XEON 2.5 ghz Centos 7:
 
 **Kontraktor:**
 
-a) 1.900.000	b) 1.050.000
+a) 1.900.000	
+
+b) 1.050.000
 
 **AKKA**
 
