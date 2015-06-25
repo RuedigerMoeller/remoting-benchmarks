@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.vertx</groupId>
+
+  <artifactId>vertx-examples</artifactId>
+
+  <packaging>pom</packaging>
+
+  <version>3.0.0</version>
+
+  <modules>
+    <!--<module>maven-simplest</module>-->
+    <!--<module>maven-verticle</module>-->
+    <module>core-examples</module>
+    <!--<module>web-examples</module>-->
+    <!--<module>rx-examples</module>-->
+    <module>examples-utils</module>
+    <!--<module>unit-examples</module>-->
+    <!--<module>metrics-examples</module>-->
+    <!--<module>mail-examples</module>-->
+    <!--<module>openshift-example</module>-->
+    <!--<module>maven-service-factory-examples</module>-->
+    <!--<module>service-proxy-examples</module>-->
+    <!--<module>spring-examples</module>-->
+    <!--<module>redis-examples</module>-->
+    <!--<module>jdbc-examples</module>-->
+  </modules>
+
+</project>

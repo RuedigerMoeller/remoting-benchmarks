@@ -1,12 +1,17 @@
 package io.vertx.example.core.eventbus.pointtopoint;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.buffer.impl.BufferImpl;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageCodec;
+import io.vertx.core.eventbus.impl.codecs.ByteArrayMessageCodec;
 import io.vertx.example.util.Runner;
 import org.nustaq.kontraktor.util.RateMeasure;
 import org.nustaq.serialization.FSTConfiguration;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 
 /*
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -21,28 +26,51 @@ public class Sender extends AbstractVerticle {
     }
 
     static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
-    RateMeasure msg = new RateMeasure("rate");
+
+    static boolean ASKTEST = false;
+
     @Override
     public void start() throws Exception {
         EventBus eb = vertx.eventBus();
+//        new Thread( () -> {
+//            while( true ) {
+//                if ( ASKTEST )
+//                    sendMsg(eb,500);
+//                else
+//                    sendMsg(eb,200);
+//            }
+//        }).start();
+        vertx.setPeriodic(1, num -> {
+            if ( ASKTEST )
+                sendMsg(eb,200);
+            else
+                sendMsg(eb,200);
+        });
 
-        AtomicInteger count = new AtomicInteger(0);
-        // Send a message every second
-        for (int i = 0; i < NUM_MSG; i++) {
-            eb.send("ping-address", conf.asByteArray(new Sum(i, i + 1)), reply -> {
-                if (reply.succeeded()) {
-                    msg.count();
-                    count.incrementAndGet();
+    }
 
-                    if ( count.get() == NUM_MSG ) {
-                        System.out.println("all received");
+    RateMeasure counter = new RateMeasure("send");
+    private void sendMsg(EventBus eb, int numMsg) {
+        for (int i = 0; i < numMsg; i++) {
+            if ( ASKTEST ) {
+                counter.count();
+                eb.send("ask", conf.asByteArray(new Sum(i, i + 1)), reply -> {
+                    if (reply.succeeded()) {
+                        // vert.x is not single threaded, callbacks run in arbitrary workers
+                        // => contention on big machines
+//                            count.incrementAndGet();
+//                            if (count.get() == NUM_MSG) {
+//                                System.out.println("all received");
+//                            }
+                    } else {
+                        System.out.println("No reply");
+                        reply.cause().printStackTrace();
                     }
-                } else {
-                    System.out.println("No reply");
-                }
-            });
+                });
+            } else {
+                eb.send("tell", conf.asByteArray(new Sum(i, i + 1)));
+            }
         }
-
     }
 
 

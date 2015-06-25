@@ -6,6 +6,8 @@ import org.nustaq.kontraktor.IPromise;
 import org.nustaq.kontraktor.remoting.tcp.*;
 import org.nustaq.kontraktor.util.Log;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Created by moelrue on 23.06.2015.
  */
@@ -21,7 +23,7 @@ public class KClient {
             server.print("benchTellIdiomatic START");
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
-                    yield(); // pseudo wait. else actor thread gets stuck
+                    yield(); // pseudo wait. else actor thread gets stuck (queue overflow)
                 server.sum(i, i + 1);
             }
             server.print("benchTellIdiomatic DONE");
@@ -44,14 +46,19 @@ public class KClient {
         public IPromise benchAskSum() {
             server.print("benchAskSum START");
             int resCount[] = {0}; // valid callback in same thread
+            AtomicInteger openPromises = new AtomicInteger(0);
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
-                server.askSum(i, i + 1).then(res -> resCount[0]++);
+                openPromises.incrementAndGet();
+                server.askSum(i, i + 1).then(res -> {
+                    openPromises.decrementAndGet();
+                    resCount[0]++;
+                });
             }
             while( resCount[0] < NUM_MSG ) {
                 yield(1000);
-                System.out.println("waiting "+resCount[0]);
+                System.out.println("waiting "+resCount);
             }
             server.print("benchAskSum DONE");
             Log.Info(this,"Done");
@@ -60,7 +67,7 @@ public class KClient {
 
         public IPromise benchAskSumMsg() {
             server.print("benchAskSumMsg START");
-            int resCount[] = {0}; // valid callback in same thread
+            int resCount[] = {0}; // valid, callback in same thread
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
@@ -86,7 +93,7 @@ public class KClient {
     }
 
     public static void main(String[] args) {
-        ClientActor client = Actors.AsActor(ClientActor.class,256000);
+        ClientActor client = Actors.AsActor(ClientActor.class,512000);
         client.init().await(); // we are outside actors => blocking is ok here
         client.benchTellIdiomatic()
             .thenAnd( () -> client.benchTellSumObject())

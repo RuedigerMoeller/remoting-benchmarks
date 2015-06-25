@@ -1,0 +1,185 @@
+= Vert.x examples
+
+
+image:https://vertx.ci.cloudbees.com/buildStatus/icon?job=vert.x3-examples["Build Status",link="https://vertx.ci.cloudbees.com/view/vert.x-3/job/vert.x3-examples/"]
+
+This repository contains a range of examples so you can get up and running easily with Vert.x.
+
+== Maven users
+
+Start with the link:maven-simplest[simplest Maven example] to show you how setup a simple Vert.x project that uses Maven.
+
+Use that as a template for setting up a Maven project with Vert.x.
+
+Progress to the link:maven-verticle[simple Maven verticle example] to show you how to deploy your code as verticles in
+a Maven project.
+
+== Gradle users
+
+Start with the link:gradle-simplest[simplest Gradle example] to show you how setup a simple Vert.x project that uses Gradle.
+
+Use that as a template for setting up a Gradle project with Vert.x.
+
+Progress to the link:gradle-verticle[simple Gradle verticle example] to show you how to deploy your code as verticles in
+a Gradle project
+
+== Neither Maven nor Gradle users
+
+That's fine too :)
+
+You can run most of the examples at the command line using `vertx run` if you have Vert.x installed (see below).
+
+== The examples
+
+The examples demonstrate how to use all different bits of Vert.x including Vert.x core, Vert.x-Web and various other
+services and features.
+
+Most of the examples have been written as verticles. For more information on verticles please consult the Vert.x core manual.
+
+Using verticles allows you to scale and run your code from the command line more easily, but if you prefer to embed, the
+exact same code in the verticles can also be run embedded if you prefer. It's really up to you. Verticles are
+entirely optional in Vert.x.
+
+== Different languages
+
+Most of the examples are available in all the languages that Vert.x supports.
+
+You'll find the examples for the relevant language in a directory `src/main/${lang}` where `lang` is an identifier for the
+ language, e.g. `java`, `js`, `ruby` etc.
+
+For example you'll find the Vert.x core Java examples in link:core-examples/src/main/java[] and you'll find the Vert.x core
+JavaScript examples in link:core-examples/src/main/js[]
+
+NOTE: All the non-Java examples are automatically generated from the Java examples using our magic code translator.
+
+=== Running the examples
+
+==== Running in your IDE
+
+Most of the Java examples can be run directly in your IDE (if you have one!).
+
+We provide a `main()` method in most of the example classes which allows you to conveniently run them directly in your IDE.
+
+Just right click the main method or class in your IDE and run as... application (supported by all major IDEs).
+
+==== Running at the command line
+
+If `vertx` is installed you can also run any verticle directly on the command line. This way of working may be of interest
+to you if you don't want to use Maven or Gradle or perhaps you don't use an IDE.
+
+Or perhaps you're just a command line kind of person.
+
+If you're coming from using other platforms such as Node.js you might want to work this way. You can think of the
+`vertx` command as a bit like the `node` command in Node.js.
+
+Instructions for installing Vert.x are in the next section.
+
+Once Vert.x is installed, to run an example, just cd to the example directory and type `vertx run` followed by the filename
+of the verticle. For example
+
+----
+cd core-examples/src/main/java/io/vertx/example/core
+vertx run EchoServer.java
+
+cd core-examples/src/main/js/echo
+vertx run echo_server.js
+----
+
+Yes! You can run *Java source files* directly using Vert.x (no compilation required) :)
+
+==== Installing Vert.x
+
+NOTE: This is only necessary if you want to run Vert.x at the command line. If you'd prefer to work with Maven or
+Gradle projects then you don't need to pre-install Vert.x - you just let Maven/Gradle pull in the Vert.x dependencies
+into your project as you would with any dependency.
+
+Pre-requisites: You will need to have Java 8 JDK installed.
+
+1. Download a link:http://vertx.io/downloads.html [Vert.x 3 distribution]
+2. Unzip it somewhere on your disk (e.g. in your home directory)
+3. Set your `PATH` environment variable to include the installation directory
+4. Test the install by typing `vertx -version`.
+
+On the download page, you will find several _distributions_. Each distribution has a different set
+ of components:
+
+* **Min**: The _min_ distribution contains only Vert.x Core, the support of the different
+ languages, and the Hazelcast clustering.
+* **Base**: The _base_ distribution extends the _min_ distribution with the service layer, the
+ reactive technologies integration, and the metrics.
+* **Full**: The _full_ distribution contains all the components of the Vert.x stack. It includes
+ Vert.x web and the different data access technologies.
+
+=== Vert.x core examples
+
+The link:core-examples/README.adoc[Vert.x core examples] contains a wide range of examples using just Vert.x Core.
+
+=== Vert.x-Web examples
+
+Vert.x-Web is a toolkit for building web applications using Vert.x
+
+The link:web-examples/README.adoc[Vert.x-Web examples] contains a wide range of examples using Vert.x-Web
+
+=== Vertx unit examples
+
+Vertx-unit is a toolkit for writing asynchronous tests. We include some examples of how to use this tool to test
+your Vert.x (or other asynchronous) applications.
+
+The link:unit-examples/README.adoc[Vert.x Unit examples] shows how to use Vert.x Unit.
+
+=== Data access examples
+
+==== Mongo DB examples
+
+==== JDBC examples
+
+TODO
+
+=== Mail examples
+
+The link:mail-examples/README.adoc[Vert.x Mail examples]
+contains a few examples using Vert.x Mail
+
+The mail examples show different ways to create the mail message and send it via
+tls, ssl etc. The examples either use `localhost:25` to send a mail or use host
+`mail.example.com`. To actually run the examples you will have to change the
+mail server and the user credentials in the `MailLogin` example.
+
+==== Maven Service Factory examples
+
+The link:maven-service-factory-examples[Vert.x Maven service factory examples] shows how to package a verticle that
+can be deployed using the Maven Service Factory. Such a deployment is also demonstrated using either the command line
+or the api.
+
+==== Service Proxy Examples
+
+The link:service-proxy-examples/README.adoc[Vert.x Service Proxy examples] contains an example of service proxy usage.
+It depicts how a service provider can be implemented and how the published service can be consumed.
+
+==== OSGi Examples
+
+The link:osgi-examples/README.adoc[Vert.x OSGi examples] contains a few examples using Vert.x in an OSGi context.
+
+=== Docker examples
+
+The link:docker-examples/README.adoc[Vert.x Docker examples] shows how to deploy Vert.x application in Docker containers.
+It also contains an example of application that can be deployed on Fabric8.
+
+=== Openshift examples
+
+The link:openshift-example/README.adoc[Vert.x OpenShift example] shows how to deploy Vert.x application to OpenShift
+following the two proposed approaches: using the DIY cartridge or the vert.x 3 cartridge.
+
+=== Spring Examples
+
+The link:spring-examples[Vert.x Spring Examples] shows how vert.x application can be integrated inside a Spring
+ecosystem.
+
+=== Redis example
+
+The link:redis-examples/README.adoc[Vert.x Redis Example] shows how you can interact with Redis using the vert.x redis client.
+
+=== JDBC example
+
+The link:jdbc-examples/README.adoc[Vert.x JDBC Examples] shows how you can interact JDBC Databases using the vert.x JDBC
+client.
