@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class HttpFlood {
 
-    public static int MAX_CONN_PER_ROUTE = 1; // > 1 is cheating as events not delivered in order !
+    public static int MAX_CONN_PER_ROUTE = 15; // > 1 is cheating as events not delivered in order !
     public static int MAX_CONN_TOTAL = 1000;
 
     protected CloseableHttpAsyncClient asyncHttpClient;

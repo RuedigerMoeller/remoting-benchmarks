@@ -33,7 +33,7 @@ public class ClientActor extends UntypedActor {
                 Future<Object> ask = Patterns.ask(server, new Messages.SumAsk(i, i + 1), 10000);
                 openFutures.incrementAndGet();
                 while( openFutures.get() > 80_000 ) {
-                    // don't know how to handle this idiomaticly, but this
+                    // don't know how to handle this for akka, but this
                     // definitely speeds things up. Else queues get huge and
                     // everything starves
 //                    long nan = System.nanoTime();
