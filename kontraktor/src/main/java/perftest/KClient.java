@@ -46,13 +46,10 @@ public class KClient {
         public IPromise benchAskSum() {
             server.print("benchAskSum START");
             int resCount[] = {0}; // valid callback in same thread
-            AtomicInteger openPromises = new AtomicInteger(0);
             for ( int i = 0; i < NUM_MSG; i++ ) {
                 while ( server.isMailboxPressured() )
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
-                openPromises.incrementAndGet();
                 server.askSum(i, i + 1).then(res -> {
-                    openPromises.decrementAndGet();
                     resCount[0]++;
                 });
             }

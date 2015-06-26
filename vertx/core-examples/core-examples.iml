@@ -9,15 +9,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="file://$MODULE_DIR$" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="library" name="Maven: io.vertx:vertx-core:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-common:4.0.28.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.0.28.Final" level="project" />
@@ -28,16 +19,7 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.5.0" level="project" />
-    <orderEntry type="module" module-name="examples-utils" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-codetrans:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-codegen:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.mvel:mvel2:2.2.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-lang-js:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-lang-groovy:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:2.3.10" level="project" />
-    <orderEntry type="library" name="Maven: io.vertx:vertx-lang-ruby:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jruby:jruby-complete:1.7.20" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.2" level="project" />
+    <orderEntry type="library" name="Maven: io.vertx:examples-utils:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: io.vertx:vertx-hazelcast:3.0.0" level="project" />
     <orderEntry type="library" name="Maven: de.ruedigermoeller:kontraktor:3.01" level="project" />
     <orderEntry type="library" name="Maven: org.jctools:jctools-core:1.0" level="project" />
