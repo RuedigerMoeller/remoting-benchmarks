@@ -23,7 +23,7 @@ public class KServer extends Actor<KServer> {
         int result = sum.getFirst() + sum.getSecond();
     }
 
-    // that's how the method look as idiomatic kontraktor method (params instead message class) 1.05 million/sec
+    // that's how the method looks as idiomatic kontraktor method (params instead message class) 1.05 million/sec
     public IPromise<Integer> askSum( int x, int y ) {
         measure.count();
         return new Promise<>(x + y);
