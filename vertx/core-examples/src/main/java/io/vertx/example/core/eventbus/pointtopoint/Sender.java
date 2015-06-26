@@ -18,7 +18,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class Sender extends AbstractVerticle {
 
-    private static final int NUM_MSG = 5_000_000;
+    private static final int NUM_MSG = 1_000_000;
 
     // Convenience method so you can run it in your IDE
     public static void main(String[] args) {
@@ -27,24 +27,20 @@ public class Sender extends AbstractVerticle {
 
     static FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 
-    static boolean ASKTEST = false;
+    static boolean ASKTEST = true;
+
+    AtomicInteger openFut = new AtomicInteger(0);
 
     @Override
     public void start() throws Exception {
         EventBus eb = vertx.eventBus();
-//        new Thread( () -> {
-//            while( true ) {
-//                if ( ASKTEST )
-//                    sendMsg(eb,500);
-//                else
-//                    sendMsg(eb,200);
-//            }
-//        }).start();
         vertx.setPeriodic(1, num -> {
-            if ( ASKTEST )
-                sendMsg(eb,200);
+            if ( ASKTEST ) {
+                if ( openFut.get() < 500_000 )
+                    sendMsg(eb,1000);
+            }
             else
-                sendMsg(eb,200);
+                sendMsg(eb,1000);
         });
 
     }
@@ -53,15 +49,13 @@ public class Sender extends AbstractVerticle {
     private void sendMsg(EventBus eb, int numMsg) {
         for (int i = 0; i < numMsg; i++) {
             if ( ASKTEST ) {
+                openFut.incrementAndGet();
                 counter.count();
                 eb.send("ask", conf.asByteArray(new Sum(i, i + 1)), reply -> {
                     if (reply.succeeded()) {
                         // vert.x is not single threaded, callbacks run in arbitrary workers
                         // => contention on big machines
-//                            count.incrementAndGet();
-//                            if (count.get() == NUM_MSG) {
-//                                System.out.println("all received");
-//                            }
+                        openFut.decrementAndGet();
                     } else {
                         System.out.println("No reply");
                         reply.cause().printStackTrace();

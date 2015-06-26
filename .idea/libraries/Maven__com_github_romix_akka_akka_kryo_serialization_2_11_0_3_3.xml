@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: com.github.romix.akka:akka-kryo-serialization_2.11:0.3.3">
     <CLASSES>
-      <root url="jar://$M2_REPO$/com/github/romix/akka/akka-kryo-serialization_2.11/0.3.3/akka-kryo-serialization_2.11-0.3.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/romix/akka/akka-kryo-serialization_2.11/0.3.3/akka-kryo-serialization_2.11-0.3.3.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$M2_REPO$/com/github/romix/akka/akka-kryo-serialization_2.11/0.3.3/akka-kryo-serialization_2.11-0.3.3-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/romix/akka/akka-kryo-serialization_2.11/0.3.3/akka-kryo-serialization_2.11-0.3.3-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$M2_REPO$/com/github/romix/akka/akka-kryo-serialization_2.11/0.3.3/akka-kryo-serialization_2.11-0.3.3-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/romix/akka/akka-kryo-serialization_2.11/0.3.3/akka-kryo-serialization_2.11-0.3.3-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

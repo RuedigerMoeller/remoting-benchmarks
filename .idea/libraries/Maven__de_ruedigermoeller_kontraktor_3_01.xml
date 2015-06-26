@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: de.ruedigermoeller:kontraktor:3.01">
     <CLASSES>
-      <root url="jar://$M2_REPO$/de/ruedigermoeller/kontraktor/3.01/kontraktor-3.01.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/de/ruedigermoeller/kontraktor/3.01/kontraktor-3.01.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$M2_REPO$/de/ruedigermoeller/kontraktor/3.01/kontraktor-3.01-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/de/ruedigermoeller/kontraktor/3.01/kontraktor-3.01-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$M2_REPO$/de/ruedigermoeller/kontraktor/3.01/kontraktor-3.01-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/de/ruedigermoeller/kontraktor/3.01/kontraktor-3.01-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

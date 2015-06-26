@@ -45,7 +45,7 @@ public class Receiver extends AbstractVerticle {
         eb.consumer("tell", new Handler<Message<byte[]>>() {
                 @Override
                 public void handle(Message<byte[]> event) {
-                    Sum msg = (Sum) FSTConfiguration.getDefaultConfiguration().asObject((byte[]) event.body());
+                    Sum msg = (Sum) FSTConfiguration.getDefaultConfiguration().asObject(event.body());
                     measure.count();
                 }
             });

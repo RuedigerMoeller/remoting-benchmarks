@@ -1,8 +1,7 @@
 package example.akka.remote.server;
 
 import akka.actor.UntypedActor;
-import akka.event.Logging;
-import akka.event.LoggingAdapter;
+import example.akka.remote.shared.RateMeasure;
 
 import static example.akka.remote.shared.Messages.*;
 

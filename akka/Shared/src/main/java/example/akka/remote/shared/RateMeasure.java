@@ -1,4 +1,4 @@
-package example.akka.remote.server;
+package example.akka.remote.shared;
 
 import java.util.concurrent.atomic.*;
 
