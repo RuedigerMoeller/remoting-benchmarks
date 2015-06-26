@@ -7,14 +7,13 @@ import akka.pattern.Patterns;
 import akka.actor.UntypedActor;
 import example.akka.remote.shared.Messages;
 import scala.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
+
 public class ClientActor extends UntypedActor {
 
-    public static final int NUM_MSG = 5_000_000;
+    public static final int NUM_MSG = 500_000;
     // Getting the other actor
     private ActorRef server = getContext().actorFor("akka.tcp://AkkaRemoteServer@127.0.0.1:2552/user/CalculatorActor");
     ActorSystem system; // just didn't know where to get this
-    AtomicInteger openFutures = new AtomicInteger(0); // too many unreplied futures
 
     @Override
     public void onReceive(Object message) throws Exception {
@@ -31,29 +30,25 @@ public class ClientActor extends UntypedActor {
         } else if (message.equals("ask")) {
             for (int i = 0; i < NUM_MSG; i++) {
                 Future<Object> ask = Patterns.ask(server, new Messages.SumAsk(i, i + 1), 10000);
-                openFutures.incrementAndGet();
-                while( openFutures.get() > 80_000 ) {
-                    // don't know how to handle this for akka, but this
-                    // definitely speeds things up. Else queues get huge and
-                    // everything starves
-//                    long nan = System.nanoTime();
-//                    while( System.nanoTime() - nan < 1000 ) {
-//                    }
+
+                // don't know how to handle this for akka, but this
+                // definitely speeds things up. Else queues get huge and
+                // everything starves
+                long nan = System.nanoTime();
+                while( System.nanoTime() - nan < 12_000 ) {
                     Thread.yield();
                 }
+
                 ask.andThen(
                     new JavaPartialFunction() {
                         @Override
                         public Object apply(Object x, boolean isCheck) throws Exception {
-                            openFutures.decrementAndGet();
                             return x;
                         }
                     },
-                    system.dispatcher()
+                    context().dispatcher()
                 );
             }
-        } else if (message.equals("printFutures")) {
-            System.out.println("open futures:"+openFutures.get());
         }
     }
 }

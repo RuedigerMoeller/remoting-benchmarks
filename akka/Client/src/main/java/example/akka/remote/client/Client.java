@@ -7,22 +7,32 @@ import com.typesafe.config.ConfigFactory;
 
 public class Client {
     public static void main(String[] args) throws InterruptedException {
+
+        boolean ask = true;
+
         // Creating environment
         ActorSystem system = ActorSystem.create("AkkaRemoteClient", ConfigFactory.load());
 
         // Client actor
-        ActorRef client = system.actorOf(Props.create(ClientActor.class));
+        ActorRef client = system.actorOf(Props.create(ClientActor.class).withDispatcher("pinned-dispatcher"));
         client.tell(system, ActorRef.noSender());
 
-        // start benchmark
-//        client.tell("tell", ActorRef.noSender());
-
-        // start benchmark
-        client.tell("ask", ActorRef.noSender());
-
-        while (true) {
-            Thread.sleep(1000);
-            client.tell("printFutures", ActorRef.noSender());
+        if ( !ask ) {
+            while (true) {
+                client.tell("tell", ActorRef.noSender());
+                Thread.sleep(15000);
+                System.out.println("next run");
+            }
+        } else {
+            while (true) {
+                client.tell("ask", ActorRef.noSender());
+                Thread.sleep(15000);
+                System.out.println("next run");
+            }
         }
+
+        // start benchmark
+
+
     }
 }

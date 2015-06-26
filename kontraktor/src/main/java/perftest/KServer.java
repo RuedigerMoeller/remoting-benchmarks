@@ -41,7 +41,7 @@ public class KServer extends Actor<KServer> {
     }
 
     public static void main(String[] args) {
-        KServer server = Actors.AsActor(KServer.class);
+        KServer server = Actors.AsActor(KServer.class, 512000);
         new TCPPublisher(server,7001).publish();
     }
 

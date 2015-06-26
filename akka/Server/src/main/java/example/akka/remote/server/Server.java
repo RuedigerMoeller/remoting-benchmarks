@@ -14,6 +14,6 @@ public class Server {
         ActorSystem system = ActorSystem.create("AkkaRemoteServer", ConfigFactory.load());
 
         // Create an actor
-        system.actorOf(Props.create(CalculatorActor.class), "CalculatorActor");
+        system.actorOf(Props.create(CalculatorActor.class).withDispatcher("pinned-dispatcher"), "CalculatorActor");
     }
 }
