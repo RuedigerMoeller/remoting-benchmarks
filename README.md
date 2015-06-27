@@ -24,34 +24,4 @@ server.tellSum( a, b ); // server computes sum but does not send a reply
 b) send a sumrequest and receive result async.  
 server.askSum( a, b ).then( result -> ... )
 
-Numbers on Haswell XEON 2.5 ghz Centos 7:
-
-**Kontraktor:**
-
-a) 1.900.000	
-
-b) 1.050.000
-
-**AKKA** (with Kryo serialization enabled)
-
-a) 76.000	
-
-b) 65000
-
-**RestExpress**	
-
-a) 15.000	 
-
-b) 15.000  
-
-Note: http 1.1 does not allow for fire and forget
-
-**Rest with 100 connections**	
-
-a) 48.000	
-
-b) 48.000  
-
-Note: client uses 100 (!) connections to fire requests concurrently. 
-This is cheating as message order is messed up this way. Was just curious.
-
+results see http://java-is-the-new-c.blogspot.de/2015/06/dont-rest-revisiting-rpc-performance.html
