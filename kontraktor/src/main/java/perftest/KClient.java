@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class KClient {
 
+    public static final int YIELDTHRESH = 10_000;
     static int NUM_MSG = 20_000_000;
 
     public static class ClientActor extends Actor<ClientActor> {
@@ -22,7 +23,7 @@ public class KClient {
         public IPromise benchTellIdiomatic() {
             server.print("benchTellIdiomatic START");
             for ( int i = 0; i < NUM_MSG; i++ ) {
-                while ( server.isMailboxPressured() )
+                while ( server.getMailboxSize() > YIELDTHRESH )
                     yield(); // pseudo wait. else actor thread gets stuck (queue overflow)
                 server.sum(i, i + 1);
             }
@@ -34,7 +35,7 @@ public class KClient {
         public IPromise benchTellSumObject() {
             server.print("benchTellSumObject START");
             for ( int i = 0; i < NUM_MSG; i++ ) {
-                while ( server.isMailboxPressured() )
+                while ( server.getMailboxSize() > YIELDTHRESH)
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
                 server.sumMsg(new Sum(i, i + 1));
             }
@@ -47,7 +48,7 @@ public class KClient {
             server.print("benchAskSum START");
             int resCount[] = {0}; // valid callback in same thread
             for ( int i = 0; i < NUM_MSG; i++ ) {
-                while ( server.isMailboxPressured() )
+                while ( server.getMailboxSize() > YIELDTHRESH )
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
                 server.askSum(i, i + 1).then(res -> {
                     resCount[0]++;
@@ -66,7 +67,7 @@ public class KClient {
             server.print("benchAskSumMsg START");
             int resCount[] = {0}; // valid, callback in same thread
             for ( int i = 0; i < NUM_MSG; i++ ) {
-                while ( server.isMailboxPressured() )
+                while ( server.getMailboxSize() > YIELDTHRESH)
                     yield(); // nonblocking wait. else actor thread gets stuck as messages queue up massively
                 server.askSumMsg(new Sum(i,i+1)).then( res -> resCount[0]++ );
             }
@@ -80,8 +81,8 @@ public class KClient {
         }
 
         public IPromise init() {
-            server = (KServer) new TCPConnectable(KServer.class,"localhost",7001).connect( (res,err) -> {
-                Log.Info(this,"disconnected, exiting");
+            server = (KServer) new TCPConnectable(KServer.class,"localhost",7001)/*.inboundQueueSize(512_000)*/.connect((res, err) -> {
+                Log.Info(this, "disconnected, exiting");
                 System.exit(0);
             }).await(); // pseudo block as inside actor
             return resolve();
@@ -90,12 +91,12 @@ public class KClient {
     }
 
     public static void main(String[] args) {
-        ClientActor client = Actors.AsActor(ClientActor.class,512000);
+        ClientActor client = Actors.AsActor(ClientActor.class);
         client.init().await(); // we are outside actors => blocking is ok here
         client.benchTellIdiomatic()
             .thenAnd( () -> client.benchTellSumObject())
-            .thenAnd(() -> client.benchAskSum())
-            .then(() -> client.benchAskSumMsg() );
+            .thenAnd( () -> client.benchAskSum())
+            .then( () -> client.benchAskSumMsg() );
     }
 
 }

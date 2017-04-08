@@ -9,7 +9,7 @@ import org.nustaq.kontraktor.util.*;
  */
 public class KServer extends Actor<KServer> {
 
-    RateMeasure measure = new RateMeasure("msg/sec");
+    RateMeasure measure = new RateMeasure("msg/sec").print(true);
 
     // that's how a no-return sum method would look like with Kontraktor 2 million/sec
     public void sum( int x, int y ) {
@@ -41,7 +41,7 @@ public class KServer extends Actor<KServer> {
     }
 
     public static void main(String[] args) {
-        KServer server = Actors.AsActor(KServer.class, 512000);
+        KServer server = Actors.AsActor(KServer.class);
         new TCPPublisher(server,7001).publish();
     }
 
