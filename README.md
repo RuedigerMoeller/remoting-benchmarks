@@ -26,9 +26,9 @@ server.askSum( a, b ).then( result -> ... )
 
 results see http://java-is-the-new-c.blogspot.de/2015/06/dont-rest-revisiting-rpc-performance.html
 
-**Note**: test has been updated to kontraktor 3.33 (from 3.01) this leads to a performance loss of 30-70% in kontraktor results (still beating other frameworks by a huge margin)
+**Note**: test has been updated to kontraktor 3.33 (from 3.01) this leads to a performance loss of 30-70% in results (still beating the other frameworks by a huge margin)
 
-Reasons are practical (all of those changes can be reverted by overloading/configuring to obtain raw throughput of 3.01-3.14):
+Reasons are practical (all of those changes can be reverted by overloading/configuring kontraktor to obtain raw throughput of 3.01-3.14):
 
-* remotecalls now contain their call arguments serialized (downside: slower encoding upside: can use "routing remote actors" which route remotecalls without having knowledge of the classes passed [no downtime when updating a distrbuted system])
+* remotecalls now contain their call arguments serialized (downside: slower encoding, upside: can use "routing remote actors" which route remotecalls without having knowledge of the classes passed through [no downtime when updating a distributed system])
 * switched from fixed-sized/block-if-full queues to dynamically growing unbounded queues. Bounded queues of a performance advantage however with larger distributed systems a queue overflow easily messes up the whole system by blocking a random actor thread, so the unbounded queues are more foolproof and require less tuning and testing.
